@@ -1,14 +1,19 @@
-import express from 'express';
+import { NodeRuntime } from "@effect/platform-node";
+import { NodeServer } from "effect-http-node";
+import { PORT } from "./config/config";
+import { connectDB } from "./db/db";
+import { router } from "./routes";
 
-const host = process.env.HOST ?? 'localhost';
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+async function startServer() {
+  try {
+    await connectDB(); // Ensure MongoDB is connected first
+    console.log("✅ MongoDB connected. Starting server...");
 
-const app = express();
+    router.pipe(NodeServer.listen({ port: Number(PORT) }), NodeRuntime.runMain);
+  } catch (error) {
+    console.error("❌ Failed to connect to MongoDB:", error);
+    process.exit(1);
+  }
+}
 
-app.get('/', (req, res) => {
-  res.send({ message: 'Hello API' });
-});
-
-app.listen(port, host, () => {
-  console.log(`[ ready ] http://${host}:${port}`);
-});
+startServer();

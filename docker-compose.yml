@@ -1,0 +1,33 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  backend:
+    build: .
+    container_name: nx-backend
+    depends_on:
+      - mongodb
+    ports:
+      - "3000:3000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongodb:27017/todoapp
+      - JWT_SECRET=ultrasecret
+    volumes:
+      - .:/app
+    command: ["/bin/sh", "-c", "rm -rf node_modules && npm install && npx nx serve effect-todo-app --host 0.0.0.0"]
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4g
+
+volumes:
+  mongodb_data:
