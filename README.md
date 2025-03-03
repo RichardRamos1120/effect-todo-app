@@ -167,5 +167,3 @@ If using **VSCode Dev Containers**, open **Command Palette (**\`\`**)** and sele
 - **Using Docker is recommended** for easy setup.
 - **For production, use a process manager like PM2** to keep the server running.
 
-🚀 **Enjoy building with Effect TS!**
-
