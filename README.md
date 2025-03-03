@@ -1,122 +1,162 @@
-TODO API
+# TODO API
 
-🚀 Setup Instructions
+This is a simple TODO API built with Node.js, Express, and MongoDB. It provides endpoints for user authentication and managing TODO items.
 
-1️⃣ Clone the Repository
+## 🚀 Setup Instructions
 
-git clone <your-repository-url>
-cd <your-repository-folder>
+1.  **Clone the Repository**
 
-2️⃣ Install Dependencies
+    ```bash
+    git clone <repository_url>
+    cd <repository_directory>
+    ```
 
-npm install
+2.  **Install Dependencies**
 
-3️⃣ Set Up Environment Variables
+    ```bash
+    npm install
+    ```
 
-Create a .env file in the root directory and add the following:
+3.  **Set Up Environment Variables**
 
-PORT=3000
-MONGODB_URI=mongodb://localhost:27017/todoapp
-JWT_SECRET=ultrasecret
+    Create a `.env` file in the root directory and add the following:
 
-4️⃣ Start the Server
+    ```
+    PORT=3000
+    MONGODB_URI=mongodb://localhost:27017/todoapp
+    JWT_SECRET=ultrasecret
+    ```
 
-npm start
+    * `PORT`: The port on which the server will run.
+    * `MONGODB_URI`: The MongoDB connection URI. Ensure MongoDB is running locally or provide a remote connection string.
+    * `JWT_SECRET`: A secret key used for JWT token generation. **Important:** Replace `ultrasecret` with a strong, unique secret in a production environment.
 
-🛠 API Endpoints
+4.  **Start the Server**
 
-🔹 1. Register a New User
+    ```bash
+    npm start
+    ```
 
-Method: POSTURL: http://localhost:3000/usersBody (JSON):
+## 🛠 API Endpoints
 
-{
-  "email": "testuser@example.com",
-  "password": "securepassword"
-}
+### 🔹 1. Register a New User
 
-Expected Response:
+* **Method:** `POST`
+* **URL:** `http://localhost:3000/users`
+* **Body (JSON):**
 
-"User registered successfully"
+    ```json
+    {
+      "email": "testuser@example.com",
+      "password": "securepassword"
+    }
+    ```
 
-🔹 2. Login to Get JWT Token
+* **Expected Response:**
 
-Method: POSTURL: http://localhost:3000/users/loginBody (JSON):
+    ```
+    "User registered successfully"
+    ```
 
-{
-  "email": "testuser@example.com",
-  "password": "securepassword"
-}
+### 🔹 2. Login to Get JWT Token
 
-Expected Response:
+* **Method:** `POST`
+* **URL:** `http://localhost:3000/users/login`
+* **Body (JSON):**
 
-"your-jwt-token-here"
+    ```json
+    {
+      "email": "testuser@example.com",
+      "password": "securepassword"
+    }
+    ```
 
-👉 Copy this token for the next requests.
+* **Expected Response:**
 
-🔹 3. Create a New TODO (Requires Token)
+    ```
+    "your-jwt-token-here"
+    ```
 
-Method: POSTURL: http://localhost:3000/todosHeaders:
+    👉 Copy this token for subsequent requests that require authentication.
 
-Authorization: Bearer your-jwt-token-here
-Content-Type: application/json
+### 🔹 3. Create a New TODO (Requires Token)
 
-Body (JSON):
+* **Method:** `POST`
+* **URL:** `http://localhost:3000/todos`
+* **Headers:**
+    * `Authorization: Bearer your-jwt-token-here`
+    * `Content-Type: application/json`
+* **Body (JSON):**
 
-{
-  "text": "Buy groceries"
-}
+    ```json
+    {
+      "text": "Buy groceries"
+    }
+    ```
 
-Expected Response:
+* **Expected Response:**
 
-{
-  "text": "Buy groceries",
-  "completed": false
-}
+    ```json
+    {
+      "text": "Buy groceries",
+      "completed": false
+    }
+    ```
 
-🔹 4. Get All TODOs (Requires Token)
+### 🔹 4. Get All TODOs (Requires Token)
 
-Method: GETURL: http://localhost:3000/todosHeaders:
+* **Method:** `GET`
+* **URL:** `http://localhost:3000/todos`
+* **Headers:**
+    * `Authorization: Bearer your-jwt-token-here`
+* **Expected Response:**
 
-Authorization: Bearer your-jwt-token-here
+    ```json
+    [
+      {
+        "text": "Buy groceries",
+        "completed": false
+      }
+    ]
+    ```
 
-Expected Response:
+### 🔹 5. Update a TODO (Requires Token)
 
-[
-  {
-    "text": "Buy groceries",
-    "completed": false
-  }
-]
+* **Method:** `PATCH`
+* **URL:** `http://localhost:3000/todos/{todo-id}` (Replace `{todo-id}` with the actual TODO ID)
+* **Headers:**
+    * `Authorization: Bearer your-jwt-token-here`
+    * `Content-Type: application/json`
+* **Body (JSON):**
 
-🔹 5. Update a TODO (Requires Token)
+    ```json
+    {
+      "completed": true
+    }
+    ```
 
-Method: PATCHURL: http://localhost:3000/todos/{todo-id}Headers:
+* **Expected Response:**
 
-Authorization: Bearer your-jwt-token-here
-Content-Type: application/json
+    ```
+    "Todo updated successfully"
+    ```
 
-Body (JSON):
+### 🔹 6. Delete a TODO (Requires Token)
 
-{
-  "completed": true
-}
+* **Method:** `DELETE`
+* **URL:** `http://localhost:3000/todos/{todo-id}` (Replace `{todo-id}` with the actual TODO ID)
+* **Headers:**
+    * `Authorization: Bearer your-jwt-token-here`
+* **Expected Response:**
 
-Expected Response:
+    ```
+    "Todo deleted"
+    ```
 
-"Todo updated successfully"
+## 🎯 Notes
 
-🔹 6. Delete a TODO (Requires Token)
-
-Method: DELETEURL: http://localhost:3000/todos/{todo-id}Headers:
-
-Authorization: Bearer your-jwt-token-here
-
-Expected Response:
-
-"Todo deleted"
-
-🎯 Notes
-
-Make sure MongoDB is running locally or provide a remote MongoDB connection in the .env file.
-
-Every request that modifies or retrieves todos requires JWT authentication.
+* Ensure MongoDB is running locally or provide a remote MongoDB connection in the `.env` file.
+* Every request that modifies or retrieves TODOs requires JWT authentication.
+* Remember to replace `<repository_url>` and `<repository_directory>` with your actual repository URL and local directory name.
+* Always protect your `JWT_SECRET` in a production environment. Do not commit it to version control.
+* For production, consider using a process manager like PM2 to keep the server running.
