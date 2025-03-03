@@ -1,4 +1,6 @@
-# TODO API IN EFFECT TS
+# TODO API - EFFECT TS
+
+This is a simple TODO API built with Effect TS. It provides endpoints for user authentication and managing TODO items.
 
 ## 🚀 Setup Instructions
 
@@ -29,11 +31,15 @@
     * `MONGODB_URI`: The MongoDB connection URI. Ensure MongoDB is running locally or provide a remote connection string.
     * `JWT_SECRET`: A secret key used for JWT token generation. **Important:** Replace `ultrasecret` with a strong, unique secret in a production environment.
 
-4.  **Start the Server**
+4. **Start the Server (Using Nx Serve)**
+
+    If your project is set up with Nx, you can also use `nx serve` to start the server. Replace `<your-project-name>` with the appropriate name of your project.
 
     ```bash
-    npm start
+    nx serve <your-project-name>
     ```
+
+    If you are unsure of your project name, check your `nx.json` file.
 
 ## 🛠 API Endpoints
 
@@ -155,6 +161,6 @@
 
 * Ensure MongoDB is running locally or provide a remote MongoDB connection in the `.env` file.
 * Every request that modifies or retrieves TODOs requires JWT authentication.
-* Remember to replace `<repository_url>` and `<repository_directory>` with your actual repository URL and local directory name.
+* Remember to replace `<repository_url>`, `<repository_directory>`, and `<your-project-name>` with your actual repository URL, local directory name, and project name.
 * Always protect your `JWT_SECRET` in a production environment. Do not commit it to version control.
 * For production, consider using a process manager like PM2 to keep the server running.
