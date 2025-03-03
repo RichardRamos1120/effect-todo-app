@@ -1,4 +1,4 @@
-# TODO API IN EXPRESS TS
+# TODO API IN EFFECT TS
 
 ## 🚀 Setup Instructions
 
