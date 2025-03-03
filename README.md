@@ -33,7 +33,7 @@ This is a simple TODO API built with Effect TS. It provides endpoints for user a
 
 4. **Start the Server (Using Nx Serve)**
 
-    If your project is set up with Nx, you can also use `nx serve` to start the server. Replace `<your-project-name>` with the appropriate name of your project.
+    `nx serve` to start the server. Replace `<your-project-name>` with the appropriate name of your project.
 
     ```bash
     nx serve <your-project-name>
