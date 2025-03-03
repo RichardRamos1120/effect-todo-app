@@ -1,6 +1,6 @@
 # TODO API
 
-This is a simple TODO API built with Node.js, Express, and MongoDB. It provides endpoints for user authentication and managing TODO items.
+This is a simple TODO API built with Node.js, Effect, and MongoDB. It provides endpoints for user authentication and managing TODO items.
 
 ## 🚀 Setup Instructions
 
