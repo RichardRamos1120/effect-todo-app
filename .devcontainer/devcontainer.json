@@ -1,0 +1,14 @@
+{
+  "name": "NX Dev Container",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "backend",
+  "workspaceFolder": "/app",
+  "extensions": [
+    "ms-vscode.vscode-typescript-next",
+    "esbenp.prettier-vscode",
+    "Postman.postman-for-vscode"
+  ],
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  }
+}
