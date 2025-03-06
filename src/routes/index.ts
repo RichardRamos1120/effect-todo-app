@@ -5,10 +5,7 @@ import {
   HttpApiBuilder,
   HttpApiEndpoint,
   HttpApiGroup,
-  HttpMiddleware
 } from "@effect/platform"
-import { NodeHttpServer, NodeRuntime } from "@effect/platform-node"
-import { createServer } from "node:http"
 import mongoose from "mongoose"
 
 import jwt from "jsonwebtoken"
@@ -250,14 +247,3 @@ export const apiLive = HttpApiBuilder.api(api)
   .pipe(Layer.provide(usersGroupLive))
   .pipe(Layer.provide(todosGroupLive))
 
-// --------------------
-// Set Up and Launch the Server
-// --------------------
-const serverLayer = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
-  Layer.provide(HttpApiBuilder.middlewareCors({ allowedHeaders: ["Authorization"] })),
-  Layer.provide(apiLive),
-  Layer.provide(NodeHttpServer.layer(createServer, { port: Number(config.PORT) || 3000 }))
-)
-
-// Launch the server
-Layer.launch(serverLayer).pipe(NodeRuntime.runMain({}))
