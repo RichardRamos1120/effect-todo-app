@@ -1,11 +1,13 @@
-import { Config } from "effect";
+import { Config, Effect } from "effect";
 import dotenv from "dotenv";
+
+// Load environment variables
 dotenv.config();
 
-export const config = {
-  PORT: Config.number(process.env.PORT) || '',
-  MONGODB_URI: Config.string(process.env.MONGODB_URI) || '',
-  JWT_SECRET: Config.string(process.env.JWT_SECRET) || ''
-};
+const configEffect = Effect.all({
+  PORT: Config.number("PORT").pipe(Config.withDefault(8080)),
+  MONGODB_URI: Config.string("MONGODB_URI"),
+  JWT_SECRET: Config.string("JWT_SECRET")
+});
 
-export const { PORT, MONGODB_URI, JWT_SECRET } = process.env;
+export const config = Effect.runSync(configEffect);

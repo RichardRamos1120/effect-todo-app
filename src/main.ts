@@ -1,19 +1,21 @@
-import { NodeRuntime } from "@effect/platform-node";
-import { NodeServer } from "effect-http-node";
-import { PORT } from "./config/config";
-import { connectDB } from "./db/db";
-import { router } from "./routes";
+import { Layer } from "effect"
+import {
+  HttpApiBuilder,
+  HttpMiddleware
+} from "@effect/platform"
+import { NodeHttpServer, NodeRuntime } from "@effect/platform-node"
+import { createServer } from "node:http"
+import { apiLive } from "./routes"
+import { config } from "./config/config"
 
-async function startServer() {
-  try {
-    await connectDB(); // Ensure MongoDB is connected first
-    console.log("✅ MongoDB connected. Starting server...");
 
-    router.pipe(NodeServer.listen({ port: Number(PORT) }), NodeRuntime.runMain);
-  } catch (error) {
-    console.error("❌ Failed to connect to MongoDB:", error);
-    process.exit(1);
-  }
-}
+// Set Up and Launch the Server
+// --------------------
+const serverLayer = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
+  Layer.provide(HttpApiBuilder.middlewareCors({ allowedHeaders: ["Authorization"] })),
+  Layer.provide(apiLive),
+  Layer.provide(NodeHttpServer.layer(createServer, { port: Number(config.JWT_SECRET) || 3000 }))
+)
 
-startServer();
+// Launch the server
+Layer.launch(serverLayer).pipe(NodeRuntime.runMain({}))
